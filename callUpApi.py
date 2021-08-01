@@ -253,7 +253,7 @@ class connectUpBanking():
 
 
 
-awsConnectionDict = {
+configurationDict = {
     "UPBANKING_API_KEY": "GET_YOUR_OWN",
     "UPBANKING_URL_BASE": "https://api.up.com.au/api/v1",
     "ACCOUNTS": {
@@ -267,7 +267,7 @@ awsConnectionDict = {
 }
 
 # initialise class
-upYours = connectUpBanking(awsConnectionDict)
+upYours = connectUpBanking(configurationDict)
 
 # convert to dataframe and output to local (Windows)
 accountDataframe = pd.DataFrame(upYours.accountData())
