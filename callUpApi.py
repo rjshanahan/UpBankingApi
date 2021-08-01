@@ -9,21 +9,18 @@ import pandas as pd
 import urllib.parse
 from pathlib import Path
 import copy
-import boto3
-import botocore
-from io import StringIO
-import csv
 from datetime import datetime, timedelta, timezone
 
 
 class connectUpBanking():
     """
-    Handle connections and POST/GET requests to UpBanking API.
+    Extract all account, transaction and category data from Up! Banking API.
+    This class handles connections, requests and parsing responses.
     Args:
         url (str): endpoint URL for UpBanking API
-        apiKey (str): secret API Key obtained through Up!developer portal (https://developer.up.com.au)        
+        apiKey (str): secret API Key obtained through Up! developer portal (https://developer.up.com.au)        
     Returns:
-        responseJson (dict): JSON payload containing endpoint response
+        accountList (dict): JSON payload containing flattened account and transaction data.
     """
     def __init__(self,
                  awsConnectionDict
@@ -164,7 +161,6 @@ class connectUpBanking():
             print('ERROR: response payload: {}'.format(str(UpBankingResponse.text)))
             UpBankingResponse = None
             
-        
         return UpBankingResponse
 
 
@@ -270,10 +266,10 @@ awsConnectionDict = {
     },
 }
 
-# initialise
+# initialise class
 upYours = connectUpBanking(awsConnectionDict)
 
-# convert to dataframe
+# convert to dataframe and output to local (Windows)
 accountDataframe = pd.DataFrame(upYours.accountData())
 accountDataframe.to_csv(r"{}/Documents/UpAccountTransactions.csv".format(Path.home()), index=False)
 
